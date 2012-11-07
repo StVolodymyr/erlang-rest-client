@@ -63,7 +63,7 @@ parse_response({ok, {{"HTTP/1.1", 200, "OK"}, Headers, Body}}) ->
       Payload = mochijson2:decode(Body, [{format, proplist}]),
       {ok, Payload};
     _ ->
-      error("Unsupported content-type")
+      {undefined, Body}
   end;
 parse_response({ok, {{"HTTP/1.1", 201, "Created"}, Headers, Body}}) ->
   case kf("content-type", Headers) of
@@ -73,7 +73,7 @@ parse_response({ok, {{"HTTP/1.1", 201, "Created"}, Headers, Body}}) ->
       Payload = mochijson2:decode(Body, [{format, proplist}]),
       {ok, Payload};
     _ ->
-      error("Unsupported content-type")
+      {undefined, Body}
   end;
 parse_response({ok, {{"HTTP/1.1", 204, "No Content"}, _Headers, _Body}}) ->
   ok;
